@@ -1,9 +1,7 @@
 from footprinting import subdomain_info
 import warnings
-warnings.filterwarnings("ignore")
-import logging
-logging.getLogger("urllib3").setLevel(logging.CRITICAL)
-logging.getLogger("sublist3r").setLevel(logging.CRITICAL)  
+
+
 
 sub_info=subdomain_info()
 
