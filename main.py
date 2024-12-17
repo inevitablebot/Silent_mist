@@ -1,14 +1,42 @@
 from footprinting import subdomain_info
 import warnings
+from dns_sniffer import Device
+import argparse
 
+sub_info = subdomain_info()
 
+# Function to handle subdomain scanning
+def subdomain_scan():
+    enter_subdomain = input("Enter subdomain to scan: ")
+    sub_info.get_subdomains(enter_subdomain, threads=40, verbose=False)
+    alive_sub = sub_info.check_alive_subdomain()
+    print(f"Alive subdomains: {alive_sub}")
 
-sub_info=subdomain_info()
+    # Get domain IP
+    domain_ip = sub_info.get_domain_ip(enter_subdomain)
+    print(f"Domain IP: {domain_ip}")
 
-enter_subdomain=input("enter subdomain to scan ")
-sub_info.get_subdomains(enter_subdomain,threads=40,verbose=False)
-alive_sub=sub_info.check_alive_subdomain()
-print(f"alive subdomains : {alive_sub}")
-domain_ip=sub_info.get_domain_ip(enter_subdomain)
-print(domain_ip)
-sub_info.get_ip()
+# Function to handle ARP MITM
+def arp_mitm():
+    routerip = input("Enter router IP: ")
+    network = input("Enter network to scan (e.g., 192.168.0.0/24): ")
+    interface = input("Enter network interface (press enter for default ): ")
+
+    device = Device(routerip, network, interface)
+    targetip = device.arp_scan(network, interface)
+    device.targetip = targetip
+    device.watch()
+
+# Main decision point
+def main():
+    choice = input("Choose functionality:\n1. Subdomain Scan\n2. ARP MITM\nEnter 1 or 2: ")
+
+    if choice == '1':
+        subdomain_scan()
+    elif choice == '2':
+        arp_mitm()
+    else:
+        print("Invalid choice. Please enter 1 or 2.")
+
+if __name__ == "__main__":
+    main()
