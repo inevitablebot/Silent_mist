@@ -3,8 +3,8 @@ import requests
 import warnings
 warnings.filterwarnings("ignore")
 import logging
-logging.getLogger("urllib3").setLevel(logging.CRITICAL)  # Suppress urllib3 logs
-logging.getLogger("sublist3r").setLevel(logging.CRITICAL)  # Suppress sublist3r logs
+logging.getLogger("urllib3").setLevel(logging.CRITICAL)  
+logging.getLogger("sublist3r").setLevel(logging.CRITICAL) 
 import socket
 
 
