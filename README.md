@@ -86,9 +86,3 @@ Feel free to contribute to this project! Contributions can include bug fixes, ne
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Contact
-
-For any inquiries or contributions, please contact:
-
-- **Author**: [inevitablebot](https://github.com/inevitablebot)
-- **Email**: [your_email@example.com]
