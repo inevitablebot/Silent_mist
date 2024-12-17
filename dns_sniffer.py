@@ -3,7 +3,7 @@ from scapy.all import arp_mitm, conf, sniff, DNS, ARP, srp, Ether
 import threading
 from time import strftime, localtime
 from colorama import Fore, Style
-
+from mac_vendor_lookup import MacLookup ,VendorNotFoundError
 warnings.filterwarnings("ignore")
 
 class Device:
@@ -48,7 +48,14 @@ class Device:
         ans, _ = srp(Ether(dst="ff:ff:ff:ff:ff:ff:ff") / ARP(pdst=network), timeout=5, iface=iface)
         print(f'{Fore.RED}########## NETWORK ##########{Style.RESET_ALL}\n')
         for sent, received in ans:
+            mac = received[ARP].hwsrc
+            ip = received[ARP].psrc
             ip = received.psrc  
-            print(f'{Fore.BLUE}{ip}{Style.RESET_ALL}')
+            try:
+                vendor=MacLookup().lookup(mac)
+            except VendorNotFoundError:
+                vendor = "Unknown"
+
+            print(f'{Fore.BLUE}{ip}{Style.RESET_ALL} ({mac,vendor})')
         return input('\nPick a device IP:')            
 
