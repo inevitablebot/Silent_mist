@@ -17,9 +17,6 @@ def subdomain_scan():
 
 
     domain_ip = sub_info.get_domain_ip(enter_subdomain)
-    # print(f"Domain IP: {domain_ip}")
-    # for i in alive_sub:
-    #     sub_ip = sub_info.get_ip()
 
 
 def arp_mitm():
