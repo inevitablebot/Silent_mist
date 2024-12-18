@@ -6,6 +6,8 @@ import logging
 logging.getLogger("urllib3").setLevel(logging.CRITICAL)  
 logging.getLogger("sublist3r").setLevel(logging.CRITICAL) 
 import socket
+import nmap
+from colorama import Fore, Style
 
 
 class subdomain_info:
@@ -14,6 +16,7 @@ class subdomain_info:
         self.subdomains = []
         self.alive=[]
         self.sub_ip=[]
+        self.open_ports = []
     def get_domain_ip(self,domain):
         try:
             self.domain_ip = socket.gethostbyname(domain)
@@ -88,3 +91,31 @@ class subdomain_info:
             for ip in self.sub_ip:
                 f.write(ip + "\n")
         return self.sub_ip
+    def ports_open(self):
+        if not self.sub_ip:
+            print("No subdomains to check")
+            return []
+
+        self.open_ports = []
+
+        for ip in self.sub_ip:
+            try:
+               
+                ports = nmap.PortScanner()
+                
+                ports.scan(ip, '1-65535')
+
+                
+                if 'tcp' in ports[ip]:
+                    for port, port_data in ports[ip]['tcp'].items():
+                        if port_data['state'] == 'open':
+                            service_name = port_data.get('name', 'unknown')
+                            product_name = port_data.get('product', 'unknown')
+                            self.open_ports.append((ip, port, service_name, product_name))
+                            print(f"Port {Fore.RED}{port}{Style.RESET_ALL} | {Fore.BLUE} {ip}{Style.RESET_ALL}  open | Service:{Fore.GREEN} {service_name} {Style.RESET_ALL}| Product: {Fore.LIGHTCYAN_EX}{product_name}{Style.RESET_ALL}")
+            except Exception as e:
+                print(f"Error scanning {ip}: {e}")
+        with open("port_info.txt","w") as f:
+            for ip in self.open_ports:
+                f.write(ip + "\n")
+        return self.open_ports

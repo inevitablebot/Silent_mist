@@ -9,12 +9,17 @@ sub_info = subdomain_info()
 def subdomain_scan():
     enter_subdomain = input("Enter subdomain to scan: ")
     sub_info.get_subdomains(enter_subdomain, threads=40, verbose=False)
+
     alive_sub = sub_info.check_alive_subdomain()
     print(f"Alive subdomains: {alive_sub}")
+    alive_ips = sub_info.get_ip()
+    alive_ips = sub_info.ports_open()
 
 
     domain_ip = sub_info.get_domain_ip(enter_subdomain)
-    print(f"Domain IP: {domain_ip}")
+    # print(f"Domain IP: {domain_ip}")
+    # for i in alive_sub:
+    #     sub_ip = sub_info.get_ip()
 
 
 def arp_mitm():
