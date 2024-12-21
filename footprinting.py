@@ -117,5 +117,5 @@ class subdomain_info:
                 print(f"Error scanning {ip}: {e}")
         with open("port_info.txt","w") as f:
             for ip in self.open_ports:
-                f.write(ip + "\n")
+                f.write(f"{ip}\n")
         return self.open_ports
